@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Frais{% endblock %}
+
+{% block body %}
+    <h1>Edit Frais</h1>
+
+    {{ include('frais/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('frais_index') }}">back to list</a>
+
+    {{ include('frais/_delete_form.html.twig') }}
+{% endblock %}

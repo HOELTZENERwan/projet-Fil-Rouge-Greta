@@ -2,9 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Role;
-use App\Entity\Client;
-use App\Entity\Utilisateur;
 use App\Repository\TrajetRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\Routing\Annotation\Route;

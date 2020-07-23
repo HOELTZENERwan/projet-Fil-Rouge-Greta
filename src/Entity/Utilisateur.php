@@ -48,7 +48,7 @@ class Utilisateur
     private $password;
 
     /**
-     * @ORM\ManyToOne(targetEntity=role::class, inversedBy="utilisateurs")
+     * @ORM\ManyToOne(targetEntity=Role::class, inversedBy="utilisateurs")
      * @ORM\JoinColumn(nullable=false)
      */
     private $idRole;

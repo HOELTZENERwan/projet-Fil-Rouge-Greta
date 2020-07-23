@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des clients{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+        {{ form_widget(form)}}
+        <button class="btn btn-primary" type="submit">{{ button_label|default('Enregistrer')}}</button>
+    {{ form_end(form)}}
+
+{# {% for client in clients %}
+<li>
+ {{ client.nom }} {{client.prenom}}
+</li>
+{% endfor %} #}
+{% endblock %}

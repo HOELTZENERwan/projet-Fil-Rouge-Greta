@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\ClientRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ClientRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ClientRepository::class)
@@ -14,31 +15,37 @@ class Client
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"read:client"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read:client"})
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read:client"})
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read:client"})
      */
     private $adresse;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read:client"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=10)
+     * @Groups({"read:client"})
      */
     private $tel;
 

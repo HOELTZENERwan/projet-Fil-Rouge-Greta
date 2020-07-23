@@ -48,6 +48,13 @@ class Frais
      */
     private $commentaire;
 
+     /**
+     * @ORM\ManyToOne(targetEntity=Role::class, inversedBy="fraisCollection")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    public $idStatutFrais;
+
+
     public function getId(): ?int
     {
         return $this->id;
