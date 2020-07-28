@@ -10,3 +10,7 @@ index:
 frais:
     path: /frais
     controller: App\Controller\FraisController::index
+
+# essai:
+#     path: /frais
+#     controller: App\Controller\FraisController::index

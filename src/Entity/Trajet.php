@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TrajetRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -36,6 +38,22 @@ class Trajet
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $commentaire;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Frais::class, mappedBy="idTrajet", orphanRemoval=true)
+     */
+    private $fraisAll;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="AllTrajets")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $idClient;
+
+    public function __construct()
+    {
+        $this->fraisAll = new ArrayCollection();
+    }
 
 
     public function __toString()
@@ -92,6 +110,49 @@ class Trajet
     public function setCommentaire(?string $commentaire): self
     {
         $this->commentaire = $commentaire;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Frais[]
+     */
+    public function getFraisAll(): Collection
+    {
+        return $this->fraisAll;
+    }
+
+    public function addFraisAll(Frais $fraisAll): self
+    {
+        if (!$this->fraisAll->contains($fraisAll)) {
+            $this->fraisAll[] = $fraisAll;
+            $fraisAll->setIdTrajet($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFraisAll(Frais $fraisAll): self
+    {
+        if ($this->fraisAll->contains($fraisAll)) {
+            $this->fraisAll->removeElement($fraisAll);
+            // set the owning side to null (unless already changed)
+            if ($fraisAll->getIdTrajet() === $this) {
+                $fraisAll->setIdTrajet(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getIdClient(): ?Client
+    {
+        return $this->idClient;
+    }
+
+    public function setIdClient(?Client $idClient): self
+    {
+        $this->idClient = $idClient;
 
         return $this;
     }

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UtilisateurRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -52,6 +54,16 @@ class Utilisateur
      * @ORM\JoinColumn(nullable=false)
      */
     private $idRole;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Frais::class, mappedBy="idCommercial", orphanRemoval=true)
+     */
+    private $fraisAll;
+
+    public function __construct()
+    {
+        $this->fraisAll = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -138,6 +150,37 @@ class Utilisateur
     public function setIdRole(?role $idRole): self
     {
         $this->idRole = $idRole;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Frais[]
+     */
+    public function getFraisAll(): Collection
+    {
+        return $this->fraisAll;
+    }
+
+    public function addFraisAll(Frais $fraisAll): self
+    {
+        if (!$this->fraisAll->contains($fraisAll)) {
+            $this->fraisAll[] = $fraisAll;
+            $fraisAll->setIdCommercial($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFraisAll(Frais $fraisAll): self
+    {
+        if ($this->fraisAll->contains($fraisAll)) {
+            $this->fraisAll->removeElement($fraisAll);
+            // set the owning side to null (unless already changed)
+            if ($fraisAll->getIdCommercial() === $this) {
+                $fraisAll->setIdCommercial(null);
+            }
+        }
 
         return $this;
     }

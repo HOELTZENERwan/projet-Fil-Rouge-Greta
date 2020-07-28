@@ -54,6 +54,30 @@ class Frais
      */
     public $idStatutFrais;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=TypeFrais::class, inversedBy="AllTypesFrais")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $idTypeFrais;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Trajet::class, inversedBy="fraisAll")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $idTrajet;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="FraisAll")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $idClient;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Utilisateur::class, inversedBy="fraisAll")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $idCommercial;
+
 
     public function getId(): ?int
     {
@@ -104,6 +128,54 @@ class Frais
     public function setCommentaire(?string $commentaire): self
     {
         $this->commentaire = $commentaire;
+
+        return $this;
+    }
+
+    public function getIdTypeFrais(): ?TypeFrais
+    {
+        return $this->idTypeFrais;
+    }
+
+    public function setIdTypeFrais(?TypeFrais $idTypeFrais): self
+    {
+        $this->idTypeFrais = $idTypeFrais;
+
+        return $this;
+    }
+
+    public function getIdTrajet(): ?Trajet
+    {
+        return $this->idTrajet;
+    }
+
+    public function setIdTrajet(?Trajet $idTrajet): self
+    {
+        $this->idTrajet = $idTrajet;
+
+        return $this;
+    }
+
+    public function getIdClient(): ?Client
+    {
+        return $this->idClient;
+    }
+
+    public function setIdClient(?Client $idClient): self
+    {
+        $this->idClient = $idClient;
+
+        return $this;
+    }
+
+    public function getIdCommercial(): ?Utilisateur
+    {
+        return $this->idCommercial;
+    }
+
+    public function setIdCommercial(?Utilisateur $idCommercial): self
+    {
+        $this->idCommercial = $idCommercial;
 
         return $this;
     }
