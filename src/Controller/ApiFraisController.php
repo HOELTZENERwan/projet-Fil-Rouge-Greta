@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\FraisRepository;
+use App\Repository\ClientRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,7 +15,7 @@ use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 class ApiFraisController extends AbstractController
 {
     /**
-     * @Route("/api/frais", name="api_frais_index", methods={"GET"})
+     * @Route("/apiee/frais", name="api_frais_index", methods={"GET"})
      */
     public function index(FraisRepository $fraisRepository, SerializerInterface $serializer)
     {
@@ -22,7 +23,7 @@ class ApiFraisController extends AbstractController
     }
 
     /**
-     * @Route("/api/frais", name="api_frais_create", methods={"POST"})
+     * @Route("/apiee/frais/create", name="api_frais_create", methods={"POST"})
      */
     public function create(Request $request, SerializerInterface $serializer, EntityManagerInterface $em, ValidatorInterface $validator){
         
@@ -51,5 +52,50 @@ class ApiFraisController extends AbstractController
             
         }
     }
+
+ /**
+     * @Route("/apiee/client", name="api_client_index", methods={"GET"})
+     */
+    public function indexClient(ClientRepository $clientRepository, SerializerInterface $serializer)
+    {
+        return $this->json($clientRepository->findAll(), 200, [], ['groups' => 'read:client']);
+    }
+
+
+     /**
+     * @Route("/apiee/client/create", name="api_client_create", methods={"POST"})
+     */
+    public function createClient(Request $request, SerializerInterface $serializer, EntityManagerInterface $em, ValidatorInterface $validator){
+        
+        $jsonRecu = $request->getContent();
+        try {
+            //désérialisation du json reçu, création d'un objet Client
+            $client = $serializer->deserialize($jsonRecu, Client::class, 'json');
+            
+            //avant de persister dans la BDD on valide (pour éviter les erreurs SQL)
+            $errors = $validator->validate($client);
+            
+            if(count($errors) > 0){
+                return $this->json($errors, 400);  //liste des erreurs de validation
+            }
+
+            //persister dans la BDD avec Doctrine
+            $em->persist($client);
+            $em->flush();
+
+        }catch(NotEncodableValueException $e){
+            //en cas d'erreur de formatage du json envoyé
+            return $this->json([
+                'status' => 400,
+                'message' => $e->getMessage()
+            ], 400);
+            
+        }
+    }
+
+
+
+
+
 
 }

@@ -2,14 +2,16 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ClientRepository;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ClientRepository::class)
+ * @ApiResource
  */
 class Client
 {
@@ -53,11 +55,13 @@ class Client
 
     /**
      * @ORM\OneToMany(targetEntity=Frais::class, mappedBy="idClient", orphanRemoval=true)
+     * @Groups({"read:client"})
      */
     private $FraisAll;
 
     /**
      * @ORM\OneToMany(targetEntity=Trajet::class, mappedBy="idClient", orphanRemoval=true)
+     * @Groups({"read:client"})
      */
     private $AllTrajets;
 

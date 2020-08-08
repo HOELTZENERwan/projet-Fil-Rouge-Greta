@@ -14,12 +14,13 @@ class FraisPersister implements DataPersisterInterface {
         $this->em = $em;
     }
 
-      
+      //faire comprendre quand on veut intervenir
+      //on ne travaille que si data est une instance de la classe Frais
     public function supports($data): bool {
         return $data instanceof Frais;
     }
 
-    //ici on définit le travail de persistance
+    //ici on définit le travail de persistance en POST
     public function persist($data){
         //d'abord mettre une date de création
         $data->setDate(new \DateTime());

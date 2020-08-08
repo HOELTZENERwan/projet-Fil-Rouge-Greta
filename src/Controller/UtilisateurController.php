@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 /**
  * @Route("/utilisateur")
  */
@@ -30,6 +31,7 @@ class UtilisateurController extends AbstractController
      */
     public function new(Request $request): Response
     {
+     
         $utilisateur = new Utilisateur();
         $form = $this->createForm(UtilisateurType::class, $utilisateur);
         $form->handleRequest($request);
@@ -43,6 +45,7 @@ class UtilisateurController extends AbstractController
         }
 
         return $this->render('utilisateur/new.html.twig', [
+  
             'utilisateur' => $utilisateur,
             'form' => $form->createView(),
         ]);

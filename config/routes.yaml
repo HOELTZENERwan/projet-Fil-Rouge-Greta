@@ -11,6 +11,6 @@ frais:
     path: /frais
     controller: App\Controller\FraisController::index
 
-# essai:
-#     path: /frais
-#     controller: App\Controller\FraisController::index
+client:
+    path: /client
+    controller: App\Controller\ClientController::index

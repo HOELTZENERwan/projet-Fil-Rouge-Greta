@@ -50,31 +50,31 @@ class Frais
 
      /**
      * @ORM\ManyToOne(targetEntity=Role::class, inversedBy="fraisCollection")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     public $idStatutFrais;
 
     /**
      * @ORM\ManyToOne(targetEntity=TypeFrais::class, inversedBy="AllTypesFrais")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $idTypeFrais;
 
     /**
      * @ORM\ManyToOne(targetEntity=Trajet::class, inversedBy="fraisAll")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $idTrajet;
 
     /**
      * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="FraisAll")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $idClient;
 
     /**
      * @ORM\ManyToOne(targetEntity=Utilisateur::class, inversedBy="fraisAll")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $idCommercial;
 
