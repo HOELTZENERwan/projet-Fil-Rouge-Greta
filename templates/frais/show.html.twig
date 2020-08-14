@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Frais{% endblock %}
+
+{% block body %}
+    <h1>Frais</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ frai.id }}</td>
+            </tr>
+            <tr>
+                <th>Montant</th>
+                <td>{{ frai.montant }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ frai.date ? frai.date|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Scan</th>
+                <td>{{ frai.scan }}</td>
+            </tr>
+            <tr>
+                <th>Commentaire</th>
+                <td>{{ frai.commentaire }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('frais_index') }}">back to list</a>
+
+    <a href="{{ path('frais_edit', {'id': frai.id}) }}">edit</a>
+
+    {{ include('frais/_delete_form.html.twig') }}
+{% endblock %}
