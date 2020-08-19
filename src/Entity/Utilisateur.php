@@ -7,17 +7,24 @@ use App\Repository\UtilisateurRepository;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=UtilisateurRepository::class)
  * @ApiResource
+ * @UniqueEntity(fields= {"email"},
+ * message= "Cette adresse email est déjà enregistrée")
  */
-class Utilisateur
+class Utilisateur implements UserInterface
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"public"})
      */
     private $id;
 
@@ -32,7 +39,9 @@ class Utilisateur
     private $prenom;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\Email()
+     * @Groups({"public"})
      */
     private $email;
 
@@ -48,19 +57,36 @@ class Utilisateur
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @var string The hashed password
+     * @Assert\Length(min="8", minMessage="Votre mot de passe doit contenir au minimum 8 caractères")
+     * @Assert\EqualTo(propertyPath="confirm_password", message="Les mots de passe doivent être identiques")
      */
     private $password;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Role::class, inversedBy="utilisateurs")
-     * @ORM\JoinColumn(nullable=false)
+     * @Assert\EqualTo(propertyPath="password", message="Les mots de passe doivent être identiques")
      */
-    private $idRole;
+    public $confirm_password;
 
     /**
      * @ORM\OneToMany(targetEntity=Frais::class, mappedBy="idCommercial", orphanRemoval=true)
      */
     private $fraisAll;
+
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
+
+  /**
+     * @ORM\Column(type="string", unique=true, nullable=true)
+     */
+    private $apiToken;
+    
+
+
 
     public function __construct()
     {
@@ -120,9 +146,14 @@ class Utilisateur
         return $this;
     }
 
+     /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
     public function getUsername(): ?string
     {
-        return $this->username;
+        return (string) $this->email;
     }
 
     public function setUsername(string $username): self
@@ -132,6 +163,10 @@ class Utilisateur
         return $this;
     }
 
+
+     /**
+     * @see UserInterface
+     */
     public function getPassword(): ?string
     {
         return $this->password;
@@ -140,18 +175,6 @@ class Utilisateur
     public function setPassword(string $password): self
     {
         $this->password = $password;
-
-        return $this;
-    }
-
-    public function getIdRole(): ?role
-    {
-        return $this->idRole;
-    }
-
-    public function setIdRole(?role $idRole): self
-    {
-        $this->idRole = $idRole;
 
         return $this;
     }
@@ -185,5 +208,43 @@ class Utilisateur
         }
 
         return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array{
+
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        //à modifier après pour vraiment distinguer les roles 
+        // guarantees that a user always has at least one role for security
+        if (empty($roles)) {
+            $roles[] = 'ROLE_USER';
+        }
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): void
+    {
+        $this->roles = $roles;
+
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials(){
+        // If you store any temporary, sensitive data on the user, clear it here
+            // $this->plainPassword = null;
+        }
+
+
+    /**
+     * @see UserInterface
+     */
+    public function getSalt(): ?string {
+        //pas besoin si on utilise l'algo bcrypt sur security.yaml
+        return null;
     }
 }

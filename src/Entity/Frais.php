@@ -49,7 +49,7 @@ class Frais
     private $commentaire;
 
      /**
-     * @ORM\ManyToOne(targetEntity=Role::class, inversedBy="fraisCollection")
+     * @ORM\ManyToOne(targetEntity=StatutFrais::class, inversedBy="fraisCollection")
      * @ORM\JoinColumn(nullable=true)
      */
     public $idStatutFrais;
@@ -66,12 +66,7 @@ class Frais
      */
     private $idTrajet;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="FraisAll")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $idClient;
-
+ 
     /**
      * @ORM\ManyToOne(targetEntity=Utilisateur::class, inversedBy="fraisAll")
      * @ORM\JoinColumn(nullable=true)
@@ -152,18 +147,6 @@ class Frais
     public function setIdTrajet(?Trajet $idTrajet): self
     {
         $this->idTrajet = $idTrajet;
-
-        return $this;
-    }
-
-    public function getIdClient(): ?Client
-    {
-        return $this->idClient;
-    }
-
-    public function setIdClient(?Client $idClient): self
-    {
-        $this->idClient = $idClient;
 
         return $this;
     }

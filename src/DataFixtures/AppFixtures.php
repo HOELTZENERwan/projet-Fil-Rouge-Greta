@@ -10,22 +10,23 @@ use App\Entity\Utilisateur;
 use App\Entity\Trajet;
 use App\Entity\StatutFrais;
 use App\Entity\TypeFrais;
-use App\Entity\Role;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 
 class AppFixtures extends Fixture
 {
+
+    private $passwordEncoder;
+
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+        {
+            $this->passwordEncoder = $passwordEncoder;
+    }
+
+
     public function load(ObjectManager $manager)
     {
         $faker = \Faker\Factory::create('fr_FR');
-
-        
-        $admin = new Role();
-        $commercial = new Role();
-        $admin->setLabel("Admin");
-        $commercial->setLabel("Commercial");
-        $manager->persist($admin);
-        $manager->persist($commercial);
 
 
         $repas = new TypeFrais();
@@ -78,18 +79,36 @@ class AppFixtures extends Fixture
         $manager->persist($cloture);
 
 
+        $superAdmin = new Utilisateur();
+        $plainPassword = "bonjourbonsoir";
+        $encoded = $this->passwordEncoder->encodePassword($superAdmin, $plainPassword);
+        $superAdmin->setNom("Estelle")
+                    ->setPrenom("Estelle")
+                    ->setEmail("estelle.gaits@gmail.com")
+                    ->setTelephone("0708050401")
+                    ->setUsername("estelle.gaits@gmail.com")
+                    ->setPassword($encoded);
+        $manager->persist($superAdmin);
+
+
+
+
+
         for($i=1; $i<10 ; $i++){
             $utilisateur = new Utilisateur();
+            $plainPasswordFaker = $faker->password();
+            $encodedPasswordFaker = $this->passwordEncoder->encodePassword($utilisateur, $plainPasswordFaker);
             $utilisateur->setNom($faker->lastName())
                         ->setPrenom($faker->firstName())
                         ->setEmail($faker->companyEmail())
                         ->setTelephone($faker->phoneNumber())
                         ->setUsername($faker->userName())
-                        ->setPassword($faker->password())
-                        ->setIdRole($commercial);
+                        ->setPassword($this->passwordEncoder->encodePassword($utilisateur, $encodedPasswordFaker));
+                   
             $manager->persist($utilisateur);
         }
 
+     
 
         for($j=1;$j<10;$j++){
             $client = new Client();
@@ -105,7 +124,7 @@ class AppFixtures extends Fixture
                 $dateDebut = $faker->dateTimeBetween($startDate = '-2 years', $endDate = 'now', $timezone='Europe/Paris');
                 $dateFin = $faker->dateTimeInInterval($startDate = $dateDebut, $interval = '+ 3 days', $timezone = 'Europe/Paris'); 
                 $trajet->setLabel($faker->sentence())
-                        ->setCommentaire($faker->paragraph())
+                        ->setCommentaire($faker->sentence())
                         ->setDateDebut($dateDebut)
                         ->setDateFin($dateFin);   
                        

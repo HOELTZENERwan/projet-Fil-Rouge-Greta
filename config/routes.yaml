@@ -2,10 +2,14 @@
 #    path: /
 #    controller: App\Controller\DefaultController::index
 
-
 index:
-    path: /test
-    controller: App\Controller\PetitTestController::index
+    path: /
+    controller: App\Controller\SecurityController::login
+    methods: GET|POST
+
+inscription:
+    path: /inscription
+    controller: App\Controller\SecurityController::inscription
 
 frais:
     path: /frais
@@ -14,3 +18,21 @@ frais:
 client:
     path: /client
     controller: App\Controller\ClientController::index
+
+login:
+    path: /login
+    controller: App\Controller\SecurityController::login
+    methods: GET|POST
+
+api_login_check:
+    path: /apiee/login_check
+    methods: POST
+
+app_logout:
+    path: /logout
+    methods: GET
+
+gesdinet_jwt_refresh_token:
+    path: /apiee/token/refresh
+    controller: gesdinet.jwtrefreshtoken::refresh
+

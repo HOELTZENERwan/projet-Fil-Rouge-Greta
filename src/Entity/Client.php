@@ -53,12 +53,7 @@ class Client
      */
     private $tel;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Frais::class, mappedBy="idClient", orphanRemoval=true)
-     * @Groups({"read:client"})
-     */
-    private $FraisAll;
-
+  
     /**
      * @ORM\OneToMany(targetEntity=Trajet::class, mappedBy="idClient", orphanRemoval=true)
      * @Groups({"read:client"})
@@ -67,7 +62,6 @@ class Client
 
     public function __construct()
     {
-        $this->FraisAll = new ArrayCollection();
         $this->AllTrajets = new ArrayCollection();
     }
 
@@ -136,36 +130,6 @@ class Client
         return $this;
     }
 
-    /**
-     * @return Collection|Frais[]
-     */
-    public function getFraisAll(): Collection
-    {
-        return $this->FraisAll;
-    }
-
-    public function addFraisAll(Frais $fraisAll): self
-    {
-        if (!$this->FraisAll->contains($fraisAll)) {
-            $this->FraisAll[] = $fraisAll;
-            $fraisAll->setIdClient($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFraisAll(Frais $fraisAll): self
-    {
-        if ($this->FraisAll->contains($fraisAll)) {
-            $this->FraisAll->removeElement($fraisAll);
-            // set the owning side to null (unless already changed)
-            if ($fraisAll->getIdClient() === $this) {
-                $fraisAll->setIdClient(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection|Trajet[]
