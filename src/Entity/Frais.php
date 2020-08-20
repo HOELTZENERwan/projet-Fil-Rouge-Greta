@@ -4,8 +4,10 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\FraisRepository;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ORM\Entity(repositoryClass=FraisRepository::class)
@@ -13,6 +15,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *  normalizationContext={"groups"={"read:frais"}},
  *  collectionOperations={"get","post"},
  *  itemOperations={"get","delete","patch"})
+ * @ApiFilter(SearchFilter::class,
+ * properties={"utilisateur":"exact"})
  */
 class Frais
 {
