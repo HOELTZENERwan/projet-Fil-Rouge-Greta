@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PetitTestController!{% endblock %}
+
+{% block body %}
+
+<div class="example-wrapper">
+    <h1>Hello {{ controller_name }}!</h1>
+</div>
+
+ <ul>
+{% for trajet in trajets %}
+        <li>{{ trajet }}</li>
+{% endfor %}
+ </ul>
+
+{% endblock %}

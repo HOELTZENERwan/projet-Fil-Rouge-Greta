@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Frais index{% endblock %}
+
+{% block body %}
+    <h1>Frais index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Montant</th>
+                <th>Date</th>
+                <th>Scan</th>
+                <th>Commentaire</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for frai in frais %}
+            <tr>
+                <td>{{ frai.id }}</td>
+                <td>{{ frai.montant }}</td>
+                <td>{{ frai.date ? frai.date|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ frai.scan }}</td>
+                <td>{{ frai.commentaire }}</td>
+                <td>
+                    <a href="{{ path('frais_show', {'id': frai.id}) }}">show</a>
+                    <a href="{{ path('frais_edit', {'id': frai.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('frais_new') }}">Create new</a>
+{% endblock %}
