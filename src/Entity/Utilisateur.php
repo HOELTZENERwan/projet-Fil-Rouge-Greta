@@ -254,4 +254,9 @@ class Utilisateur implements UserInterface
         //pas besoin si on utilise l'algo bcrypt sur security.yaml
         return null;
     }
+
+    public function __toString()
+    {
+        return $this->prenom.' '.$this->nom;
+    }
 }

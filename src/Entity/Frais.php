@@ -55,18 +55,21 @@ class Frais
      /**
      * @ORM\ManyToOne(targetEntity=StatutFrais::class, inversedBy="fraisCollection")
      * @ORM\JoinColumn(nullable=true)
+     * @Groups({"read:frais"})
      */
     public $idStatutFrais;
 
     /**
      * @ORM\ManyToOne(targetEntity=TypeFrais::class, inversedBy="AllTypesFrais")
      * @ORM\JoinColumn(nullable=true)
+     * @Groups({"read:frais"})
      */
     private $idTypeFrais;
 
     /**
      * @ORM\ManyToOne(targetEntity=Trajet::class, inversedBy="fraisAll")
      * @ORM\JoinColumn(nullable=true)
+     * @Groups({"read:frais"})
      */
     private $idTrajet;
 
@@ -74,6 +77,7 @@ class Frais
     /**
      * @ORM\ManyToOne(targetEntity=Utilisateur::class, inversedBy="fraisAll")
      * @ORM\JoinColumn(nullable=true)
+     * @Groups({"read:frais"})
      */
     private $idCommercial;
 
@@ -166,4 +170,8 @@ class Frais
 
         return $this;
     }
+
+    // public function __toString(){
+
+    // }
 }

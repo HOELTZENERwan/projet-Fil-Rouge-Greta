@@ -54,7 +54,7 @@ class ApiFraisController extends AbstractController
         }
     }
 
- /**
+    /**
      * @Route("/apiee/clients", name="api_clients_index", methods={"GET"})
      */
     public function indexClient(ClientRepository $clientRepository, SerializerInterface $serializer)
