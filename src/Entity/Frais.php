@@ -2,15 +2,20 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\FraisRepository;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\HttpFoundation\File\File;
+use Symonfy\Component\HttpFoundation\File\UploadedFile;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ORM\Entity(repositoryClass=FraisRepository::class)
+ * @Vich\Uploadable()
  * @ApiResource(
  *  normalizationContext={"groups"={"read:frais"}},
  *  collectionOperations={"get","post"},
@@ -43,8 +48,21 @@ class Frais
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"read:frais"})
+     * @var string
      */
     private $scan;
+
+    /**
+     * @var File
+     * @Vich\UploadableField(mapping="scan_images", fileNameProperty="scan")
+     */
+    private $scanFile;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @var \DateTime
+     */
+    private $updatedAt;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -81,6 +99,10 @@ class Frais
      */
     private $idCommercial;
 
+    public function __construct()
+    {
+        $this->updatedAt = new \DateTime();
+    }
 
     public function getId(): ?int
     {
@@ -111,16 +133,49 @@ class Frais
         return $this;
     }
 
+  
+    /**
+     * @return string|null
+     */
     public function getScan(): ?string
     {
         return $this->scan;
     }
 
+
+    /**
+     * @param string|null $scan
+     * @return $this
+    */
     public function setScan(?string $scan): self
     {
         $this->scan = $scan;
 
         return $this;
+    }
+
+    /**
+     * @return File|null
+     */
+    public function getScanFile(): ?File
+    {
+        return $this->scanFile;
+    }
+
+     /**
+     * @param File|null $scanFile
+     */
+    public function setScanFile(?File $scanFile=null)
+    {
+        $this->scanFile = $scanFile;
+
+        //on rajoute un changement de propriété pour que les event listeners soient déclenchés
+        //par Doctrine, car sinon le fichier est perdu
+        if(null !== $scanFile){
+            $this->updatedAt = new \DateTime();
+        }
+        
+     
     }
 
     public function getCommentaire(): ?string

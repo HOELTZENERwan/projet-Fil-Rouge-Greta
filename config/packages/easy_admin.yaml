@@ -1,7 +1,21 @@
 easy_admin:
-   entities:
+    entities:
        # List the entity class name you want to manage
-       - App\Entity\Frais
-       - App\Entity\Utilisateur
-       - App\Entity\Trajet
-       - App\Entity\Client
+        - App\Entity\Utilisateur
+            list:
+              fields:
+                - contract
+                - { property: 'contract', template: 'contract.html.twig' }
+        - App\Entity\Trajet
+        - App\Entity\Client
+        - App\Entity\Frais
+            list:
+                fields:
+                    - { property: 'image', type: 'image', base_path: '%app.path.scans%' }
+            show:
+                fields:
+                    - { property: 'image', type: 'image', base_path: '%app.path.scans%' }
+            form:
+                fields:
+                  - { property: 'imageFile', type: 'vich_image' }
+            

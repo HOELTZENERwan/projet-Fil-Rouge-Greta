@@ -60,6 +60,12 @@ class Client
      */
     private $AllTrajets;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Utilisateur::class, inversedBy="clients")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $addedBy;
+
     public function __construct()
     {
         $this->AllTrajets = new ArrayCollection();
@@ -162,8 +168,22 @@ class Client
         return $this;
     }
 
+   
+    public function getAddedBy(): ?Utilisateur
+    {
+        return $this->addedBy;
+    }
+
+    public function setAddedBy(?Utilisateur $addedBy): self
+    {
+        $this->addedBy = $addedBy;
+
+        return $this;
+    }
+
     public function __toString()
     {
         return $this->prenom.' '.$this->nom;
     }
+
 }

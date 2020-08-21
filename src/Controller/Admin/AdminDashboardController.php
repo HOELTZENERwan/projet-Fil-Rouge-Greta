@@ -6,10 +6,13 @@ use App\Entity\Frais;
 use App\Entity\Client;
 use App\Entity\Trajet;
 use App\Entity\Utilisateur;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use EasyCorp\Bundle\EasyAdminBundle\Router\CrudUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 
@@ -71,5 +74,36 @@ class AdminDashboardController extends AbstractDashboardController
         // ];
 
 
+    }
+
+    /**
+     * @Route("/admin/changeLocale", name="changeLocale")
+     */
+    public function changeLocale(Request $request)
+    {
+        $form = $this->createFormBuilder(null)
+                ->add('locale', ChoiceType::class, [
+                    'choices' => [
+                        'Français' => 'fr_FR',
+                        'English' => 'en_US'
+                    ]
+                ])
+                ->add('save', SubmitType::class)
+                ->getForm();
+
+        $form->handleRequest($request);
+        if($form->isSubmitted())
+        {
+            $em = $this->getDoctrine()->getManager();
+            $locale = $form->getData()['locale'];
+            $user = $this->getUser();
+            $user->setLocale($locale);
+            $em->persist($user);
+            $em->flush();
+        }
+
+        return $this->render('bundles/EasyAdminBundle/locale.html.twig', [
+            'form' => $form->createView()
+        ]);        
     }
 }

@@ -2,23 +2,28 @@
 
 namespace App\Entity;
 
+use App\Entity\Frais;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UtilisateurRepository;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=UtilisateurRepository::class)
+ * @Vich\Uploadable
  * @ApiResource
  * @UniqueEntity(fields= {"email"},
  * message= "Cette adresse email est déjà enregistrée")
  */
-class Utilisateur implements UserInterface
+class Utilisateur implements UserInterface, EquatableInterface
 {
     /**
      * @ORM\Id()
@@ -59,7 +64,6 @@ class Utilisateur implements UserInterface
      * @ORM\Column(type="string", length=255)
      * @var string The hashed password
      * @Assert\Length(min="8", minMessage="Votre mot de passe doit contenir au minimum 8 caractères")
-     * @Assert\EqualTo(propertyPath="confirm_password", message="Les mots de passe doivent être identiques")
      */
     private $password;
 
@@ -84,13 +88,34 @@ class Utilisateur implements UserInterface
      * @ORM\Column(type="string", unique=true, nullable=true)
      */
     private $apiToken;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Client::class, mappedBy="addedBy")
+     */
+    private $clients;
     
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @var string
+     */
+    private $contract;
 
+    /**
+     * @Vich\UploadableField(mapping="user_contracts", fileNameProperty="contract")
+     * @var File
+     */
+    private $contractFile;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $locale;
 
     public function __construct()
     {
         $this->fraisAll = new ArrayCollection();
+        $this->clients = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -102,6 +127,28 @@ class Utilisateur implements UserInterface
     {
         $this->id = $id;
 
+        return $this;
+    }
+
+    public function getContract(): ?string
+    {
+        return $this->contract;
+    }
+
+    public function setContract(string $contract): self
+    {
+        $this->contract = $contract;
+    }
+
+    public function getContractFile(): ?File
+    {
+        return $this->contractFile;
+    }
+
+    public function setContractFile(File $contractFile)
+    {
+        $this->contractFile = $contractFile;
+        
         return $this;
     }
 
@@ -243,7 +290,7 @@ class Utilisateur implements UserInterface
      */
     public function eraseCredentials(){
         // If you store any temporary, sensitive data on the user, clear it here
-            // $this->plainPassword = null;
+            // $this->passw = null;
         }
 
 
@@ -255,8 +302,66 @@ class Utilisateur implements UserInterface
         return null;
     }
 
+
+    /**
+     * @return Collection|Client[]
+     * 
+     */
+    public function getClients(): Collection
+    {
+        return $this->clients;
+    }
+
+    public function addClient(Client $client): self
+    {
+        if (!$this->clients->contains($client)) {
+            $this->clients[] = $client;
+            $client->setAddedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClient(Client $client): self
+    {
+        if ($this->clients->contains($client)) {
+            $this->clients->removeElement($client);
+            // set the owning side to null (unless already changed)
+            if ($client->getAddedBy() === $this) {
+                $client->setAddedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getLocale(): ?string
+    {
+        return $this->locale;
+    }
+
+    public function setLocale(string $locale): self
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
     public function __toString()
     {
         return $this->prenom.' '.$this->nom;
+    }
+
+    public function isEqualTo(UserInterface $user)
+    {
+        if($user instanceof self)
+        {
+            if($user->getLocale() != $this->locale) 
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
