@@ -101,7 +101,7 @@ class AdminDashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Trajets', 'fa fa-plane', Trajet::class);
         yield MenuItem::linkToCrud('Utilisateurs', 'fa fa-users', Utilisateur::class)->setPermission('ROLE_ADMIN');
         yield MenuItem::linkToCrud('Statuts Frais', 'fa fa-tasks', StatutFrais::class)->setPermission('ROLE_SUPER_ADMIN');
-        yield MenuItem::linkToCrud('Types de Frais', 'fa fa-layer-group', TypeFrais::class)->setPermission('ROLE_SUPER_ADMIN');
+        yield MenuItem::linkToCrud('Types de Frais', 'fa fa-layer-group', TypeFrais::class);
     }
 
 

@@ -8,6 +8,8 @@ use App\Repository\TypeFraisRepository;
 
 
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
@@ -31,6 +33,14 @@ class TypeFraisCrudController extends AbstractCrudController
     }
 
 
+    public function configureActions(Actions $actions):Actions 
+    {
+        return $actions
+                ->setPermission(Action::DETAIL, 'ROLE_ADMIN')
+                ->setPermission(Action::DELETE, 'ROLE_SUPER_ADMIN')
+                 ->setPermission(Action::NEW, 'ROLE_SUPER_ADMIN')
+                ->setPermission(Action::EDIT, 'ROLE_SUPER_ADMIN');
+    }
     
     public function configureFields(string $pageName): iterable
     {
