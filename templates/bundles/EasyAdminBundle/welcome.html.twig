@@ -4,8 +4,19 @@
 {% block page_title 'Bienvenue' %}
 
 {% block page_content %}
-  <div class="container">
  
+ <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-3">Dépenses en attente</h1>
+        <p class="lead">Consultez ici la liste des notes de frais en attente de traitement.</p>
+    {{ countTypeFrais['value'] }}
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+          <h2 class="display-3">Statistiques</h2>
+    </div>
     <div class="row">
         <div class="col-6 alert-info">
             <span class="display-3"> {{ countClients['value'] }}</span> clients
@@ -21,4 +32,107 @@
         </div>
     </div>
 </div>
+
+<div class="container">
+        <div class="row">
+            <h6 class="display-3">Dépenses par catégorie</h6>
+        </div>
+        {% for  type in typeFrais %}
+        <div class="row">
+            <div class="col-6">
+                {{ type }}
+            </div>
+            <div class="col-6"> 
+                <div class="progress mb-2">
+                    <div class="progress-bar" role="progressbar" style="width: 15%"
+                        aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </div>    
+           {% endfor %}   
+        <div class="row">
+            <div class="col-6">
+                Repas
+            </div>
+             <div class="col-6"> 
+                <div class="progress mb-2">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: 25%"
+                        aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+        <div class="col-6">
+                Repas
+            </div>
+            <div class="col-6"> 
+                <div class="progress mb-2">
+                    <div class="progress-bar bg-info" role="progressbar" style="width: 50%"
+                        aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">    
+        <div class="col-6">
+                Repas
+            </div> 
+            <div class="col-6">   
+                <div class="progress mb-2">
+                    <div class="progress-bar bg-warning" role="progressbar" style="width: 75%"
+                        aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">    
+        <div class="col-6">
+                Repas
+            </div>
+            <div class="col-6"> 
+                <div class="progress mb-2">
+                    <div class="progress-bar bg-danger" role="progressbar" style="width: 100%"
+                        aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+        <div class="col-6">
+                Repas
+            </div>
+            <div class="col-6"> 
+                <div class="progress mb-2">
+                    <div class="progress-bar" role="progressbar" style="width: 15%"
+                        aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar bg-success" role="progressbar" style="width: 30%"
+                        aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar bg-info" role="progressbar" style="width: 20%"
+                        aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </div>
+       <div class="row">
+       <div class="col-6">
+                Repas
+            </div>
+            <div class="col-6"> 
+                <div class="progress mb-2">
+                    <div class="progress-bar progress-bar-striped bg-danger" role="progressbar"
+                        style="width: 100%" aria-valuenow="100" aria-valuemin="0"
+                        aria-valuemax="100"></div>
+                </div>
+            </div>
+        </div>
+       <div class="row">  
+       <div class="col-6">
+                Repas
+            </div>
+            <div class="col-6">   
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated"
+                        role="progressbar" aria-valuenow="75" aria-valuemin="0"
+                        aria-valuemax="100" style="width: 75%"></div>
+                </div>
+            </div> 
+        </div>
+       
+   </div>
 {% endblock %}

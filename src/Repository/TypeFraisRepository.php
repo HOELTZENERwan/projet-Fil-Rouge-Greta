@@ -19,6 +19,17 @@ class TypeFraisRepository extends ServiceEntityRepository
         parent::__construct($registry, TypeFrais::class);
     }
 
+
+    /**
+     * @return int|mixed|string
+     */
+    public function countTypeFrais(){
+        $queryBuilder = $this->createQueryBuilder('type');
+        $queryBuilder->select('COUNT(type.id) as value');
+        return $queryBuilder->getQuery()->getOneOrNullResult();
+    }
+
+
     // /**
     //  * @return TypeFrais[] Returns an array of TypeFrais objects
     //  */

@@ -30,6 +30,24 @@ class FraisRepository extends ServiceEntityRepository
     }
 
 
+    
+    /**
+     * @return Frais[] Returns an array of Frais objects
+     */
+    public function findByTypeFrais($value)
+        {
+            return $this->createQueryBuilder('frais')
+                ->andWhere('frais.idTypeFrais = :val')
+                ->setParameter('val', $value)
+                ->orderBy('frais.id', 'ASC')
+                ->setMaxResults(10)
+                ->getQuery()
+                ->getResult()
+            ;
+        }
+    
+
+
 
 
     // /**

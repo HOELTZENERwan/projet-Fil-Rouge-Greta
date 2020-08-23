@@ -78,7 +78,7 @@ class Frais
     public $idStatutFrais;
 
     /**
-     * @ORM\ManyToOne(targetEntity=TypeFrais::class, inversedBy="AllTypesFrais")
+     * @ORM\ManyToOne(targetEntity=TypeFrais::class, inversedBy="allFrais")
      * @ORM\JoinColumn(nullable=true)
      * @Groups({"read:frais"})
      */
@@ -226,7 +226,7 @@ class Frais
         return $this;
     }
 
-    // public function __toString(){
-
-    // }
+    public function __toString(){
+        return strval('ID : '.$this->id.',  montant : '.$this->montant.' €');
+    }
 }

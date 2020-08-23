@@ -5,11 +5,13 @@ namespace App\Controller\Admin;
 use App\Entity\Frais;
 use App\Entity\Client;
 use App\Entity\Trajet;
+use App\Entity\TypeFrais;
 use App\Entity\StatutFrais;
 use App\Entity\Utilisateur;
 use App\Repository\FraisRepository;
 use App\Repository\ClientRepository;
 use App\Repository\TrajetRepository;
+use App\Repository\TypeFraisRepository;
 use App\Repository\UtilisateurRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,12 +35,14 @@ class AdminDashboardController extends AbstractDashboardController
     protected $clientRepository;
     protected $trajetRepository;
     protected $fraisRepository;
+    protected $typeFraisRepository;
     
 
 
     public function __construct(
         UtilisateurRepository $utilisateurRepository,
         FraisRepository $fraisRepository,
+        TypeFraisRepository $typeFraisRepository,
         TrajetRepository $trajetRepository,
         ClientRepository $clientRepository
     )
@@ -47,6 +51,7 @@ class AdminDashboardController extends AbstractDashboardController
         $this->trajetRepository = $trajetRepository;
         $this->fraisRepository = $fraisRepository;
         $this->clientRepository = $clientRepository;
+        $this->typeFraisRepository = $typeFraisRepository;
 
     }
 
@@ -69,12 +74,16 @@ class AdminDashboardController extends AbstractDashboardController
         //   if ('jane' === $this->getUser()->getUsername()) {
         //      return $this->redirect('...');
         //  }
+        
 
           return $this->render('bundles/EasyAdminBundle/welcome.html.twig',[
               'countUtilisateurs' => $this->utilisateurRepository->countUtilisateurs(),
               'countClients' => $this->clientRepository->countClients(),
               'countTrajets' =>$this->trajetRepository->countTrajets() ,
-              'countFrais' => $this->fraisRepository->countFrais()
+              'countFrais' => $this->fraisRepository->countFrais(),
+              'countTypeFrais' => $this->typeFraisRepository->countTypeFrais(),
+              'typeFrais' => $this->typeFraisRepository->findAll(),
+        
           ]);
     }
 
@@ -92,7 +101,7 @@ class AdminDashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Trajets', 'fa fa-plane', Trajet::class);
         yield MenuItem::linkToCrud('Utilisateurs', 'fa fa-users', Utilisateur::class)->setPermission('ROLE_ADMIN');
         yield MenuItem::linkToCrud('Statuts Frais', 'fa fa-tasks', StatutFrais::class)->setPermission('ROLE_SUPER_ADMIN');
-        yield MenuItem::linkToCrud('Types de Frais', 'fa fa-layer-group', StatutFrais::class)->setPermission('ROLE_SUPER_ADMIN');
+        yield MenuItem::linkToCrud('Types de Frais', 'fa fa-layer-group', TypeFrais::class)->setPermission('ROLE_SUPER_ADMIN');
     }
 
 

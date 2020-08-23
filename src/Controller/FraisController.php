@@ -5,10 +5,11 @@ namespace App\Controller;
 use App\Entity\Frais;
 use App\Form\FraisType;
 use App\Repository\FraisRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/frais")
@@ -20,6 +21,8 @@ class FraisController extends AbstractController
      */
     public function index(FraisRepository $fraisRepository): Response
     {
+
+       
         return $this->render('frais/index.html.twig', [
             'frais' => $fraisRepository->findAll(),
         ]);

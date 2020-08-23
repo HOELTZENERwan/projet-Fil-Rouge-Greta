@@ -29,11 +29,11 @@ class TypeFrais
     /**
      * @ORM\OneToMany(targetEntity=Frais::class, mappedBy="idTypeFrais")
      */
-    private $AllTypesFrais;
+    private $allFrais;
 
     public function __construct()
     {
-        $this->AllTypesFrais = new ArrayCollection();
+        $this->allTypesFrais = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -56,28 +56,28 @@ class TypeFrais
     /**
      * @return Collection|Frais[]
      */
-    public function getAllTypesFrais(): Collection
+    public function getAllFrais(): Collection
     {
-        return $this->AllTypesFrais;
+        return $this->allFrais;
     }
 
-    public function addTypeFrais(Frais $typeFrais): self
+    public function addTypeFrais(Frais $frais): self
     {
-        if (!$this->AllTypesFrais->contains($typeFrais)) {
-            $this->AllTypesFrais[] = $typeFrais;
-            $typeFrais->setIdTypeFrais($this);
+        if (!$this->allFrais->contains($frais)) {
+            $this->allFrais[] = $frais;
+            $frais->setIdTypeFrais($this);
         }
 
         return $this;
     }
 
-    public function removeTypeFrais(Frais $typeFrais): self
+    public function removeFrais(Frais $frais): self
     {
-        if ($this->AllTypesFrais->contains($typeFrais)) {
-            $this->AllTypesFrais->removeElement($typeFrais);
+        if ($this->allFrais->contains($frais)) {
+            $this->allFrais->removeElement($frais);
             // set the owning side to null (unless already changed)
-            if ($typeFrais->getIdTypeFrais() === $this) {
-                $typeFrais->setIdTypeFrais(null);
+            if ($frais->getIdTypeFrais() === $this) {
+                $frais->setIdTypeFrais(null);
             }
         }
 
@@ -88,4 +88,5 @@ class TypeFrais
     {
         return $this->label;
     }
+
 }
