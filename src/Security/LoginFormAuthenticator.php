@@ -51,6 +51,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
             'email' => $request->request->get('email'),
             'password' => $request->request->get('password'),
             'csrf_token' => $request->request->get('_csrf_token'),
+            'id' => $request->request->get('id')
         ];
         $request->getSession()->set(
             Security::LAST_USERNAME,
