@@ -18,6 +18,17 @@ class ClientRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Client::class);
     }
+    
+
+    /**
+     * @return int|mixed|string
+     */
+
+     public function countClients(){
+         $queryBuilder = $this->createQueryBuilder('client');
+         $queryBuilder->select('COUNT(client.id) as value');
+         return $queryBuilder->getQuery()->getOneOrNullResult();
+     }
 
     // /**
     //  * @return Client[] Returns an array of Client objects

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>Accès refusé</h1>
+<div>
+<p>Vous n'avez pas les droits d'accès nécessaires pour se connecter à la plateforme. 
+Veuillez contacter votre administrateur.</p>
+<a href="{{ path('app_login')}}" class="btn btn-primary btn-lg" role="button">
+       {% trans into 'fr_FR' %}Retour à la page de connexion{% endtrans %}
+</a>
+</div>
+
+{% endblock %}

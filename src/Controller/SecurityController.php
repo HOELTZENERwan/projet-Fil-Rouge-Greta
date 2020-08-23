@@ -20,8 +20,14 @@ class SecurityController extends AbstractController
      */
     public function index(AuthenticationUtils $authenticationUtils): Response
     {
+        //on vérifie le rôle de l'utilisateur pour rediriger en fonction 
         if ($this->getUser()) {
-            return $this->redirectToRoute('target_path');
+            if( in_array('ROLE_SUPER_ADMIN',$this->getUser()->getRoles()) || in_array('ROLE_ADMIN', $this->getUser()->getRoles()))
+            {
+                return $this->redirectToRoute('admin');
+            } else{
+                return $this->redirectToRoute('denied');
+            }
         }
 
         // get the login error if there is one
@@ -52,7 +58,7 @@ class SecurityController extends AbstractController
 
 
     /**
-     * @Route("/inscription", name="security_registration")
+     * @Route("/registration", name="registration")
      */
     public function registration(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder)
     {
@@ -69,8 +75,13 @@ class SecurityController extends AbstractController
             $hash = $encoder->encodePassword($utilisateur, $utilisateur->getPassword());
             $utilisateur->setPassword($hash);
 
+            // $locale = $form->getData()['locale'];
+            // $utilisateur->setLocale($locale);
             $manager->persist($utilisateur);
             $manager->flush();
+
+        //à la soumission on fait une redirection
+         return $this->redirectToRoute('app_login');
 
         }
 
@@ -78,11 +89,17 @@ class SecurityController extends AbstractController
                 'form' => $form->createView()
             ]);
 
-        //à la soumission on fait une redirection
-        // return $this->redirectToRoute('app_login');
+       
     }
 
 
+    /**
+     * @Route("/denied", name="access_denied")
+     */
+    public function denied()
+    {
+        return $this->render('registration/denied.html.twig');
+    }
 
     /**
      * @Route("/logout", name="app_logout")

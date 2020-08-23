@@ -4,12 +4,16 @@
 
 index:
     path: /
-    controller: App\Controller\SecurityController::login
+    controller: App\Controller\SecurityController::index
     methods: GET|POST
 
-inscription:
-    path: /inscription
-    controller: App\Controller\SecurityController::inscription
+denied:
+    path: /denied
+    controller: App\Controller\SecurityController::denied
+
+registration:
+    path: /registration
+    controller: App\Controller\SecurityController::registration
 
 frais:
     path: /frais

@@ -23,7 +23,7 @@
                 <div class="collapse navbar-collapse" id="navbarColor01">
                     <ul class="navbar-nav mr-auto">
                     {% if app.user %}
-                        <li class="nav-item">
+                        {# <li class="nav-item">
                             <a class="nav-link" href="#">Clients</a>
                         </li>
                         <li class="nav-item active">
@@ -34,7 +34,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Commerciaux</a>
-                        </li>
+                        </li> #}
                         {# <li class="nav-item"> #}
                             {# <a class="nav-link" href="{{ path('frais_new')}}">Ajouter un frais</a>
                         </li>
@@ -53,7 +53,7 @@
                             <a class="nav-link" href="{{ path('app_login')}}">Connexion</a>
                         </li>
                           <li class="nav-item">
-                            <a class="nav-link" href="{{path('inscription')}}">S'inscrire</a>
+                            <a class="nav-link" href="{{path('registration')}}">S'inscrire</a>
                         </li>
                     {% else %}
                          <li class="nav-item">

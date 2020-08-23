@@ -81,29 +81,29 @@ class AppFixtures extends Fixture
 
         $superAdmin = new Utilisateur();
         $plainPassword = "bonjourbonsoir";
-        $encoded = $this->passwordEncoder->encodePassword($superAdmin, $plainPassword);
-        $superAdmin->setNom("Estelle")
+        $superAdmin->setNom("Gaits")
                     ->setPrenom("Estelle")
                     ->setEmail("estelle.gaits@gmail.com")
-                    ->setTelephone("0708050401")
+                    ->setTelephone("0783886218")
                     ->setUsername("estelle.gaits@gmail.com")
-                    ->setPassword($encoded);
+                    ->setPassword($this->passwordEncoder->encodePassword($superAdmin, $plainPassword))
+                    ->setLocale("fr_FR")
+                    ->setRoles(['ROLE_SUPER_ADMIN']);
         $manager->persist($superAdmin);
-
-
-
 
 
         for($i=1; $i<10 ; $i++){
             $utilisateur = new Utilisateur();
+            $email = $faker->companyEmail();
             $plainPasswordFaker = $faker->password();
             $encodedPasswordFaker = $this->passwordEncoder->encodePassword($utilisateur, $plainPasswordFaker);
             $utilisateur->setNom($faker->lastName())
                         ->setPrenom($faker->firstName())
-                        ->setEmail($faker->companyEmail())
+                        ->setEmail($email)
                         ->setTelephone($faker->phoneNumber())
-                        ->setUsername($faker->userName())
-                        ->setPassword($this->passwordEncoder->encodePassword($utilisateur, $encodedPasswordFaker));
+                        ->setUsername($email)
+                        ->setLocale($faker->locale())
+                        ->setPassword($encodedPasswordFaker);
                    
             $manager->persist($utilisateur);
         }
@@ -116,35 +116,40 @@ class AppFixtures extends Fixture
                 ->setPrenom($faker->firstName())
                 ->setTel($faker->phoneNumber())
                 ->setEmail($faker->companyEmail())
+                // -setAddedBy($superAdmin->getId())
                 ->setAdresse($faker->address());
-            $manager->persist($client);
-
+        
             for($k=1;$k<=mt_rand(2, 4);$k++){
                 $trajet = new Trajet();
                 $dateDebut = $faker->dateTimeBetween($startDate = '-2 years', $endDate = 'now', $timezone='Europe/Paris');
-                $dateFin = $faker->dateTimeInInterval($startDate = $dateDebut, $interval = '+ 3 days', $timezone = 'Europe/Paris'); 
+                $dateFin = $faker->dateTimeInInterval($startDate = $dateDebut, $interval = '+ 4 days', $timezone = 'Europe/Paris'); 
                 $trajet->setLabel($faker->sentence())
                         ->setCommentaire($faker->sentence())
                         ->setDateDebut($dateDebut)
-                        ->setDateFin($dateFin);   
-                       
-                $manager->persist($trajet);
+                        ->setDateFin($dateFin);
+                        // ->setIdClient($client->getId());   
+                // $client->addTrajet($trajet);
+               
 
                 for($y=1;$y<mt_rand(2, 4); $y++){
                     $frais = new Frais();
                     $frais->setMontant($faker->randomFloat($nbMaxDecimals = 2, $min = 5, $max = 500))
                             ->setDate($faker->dateTimeBetween($startDate= $dateDebut, $endDate= $dateFin, $timezone = 'Europe/Paris'))
-                            ->setScan($faker->text($maxNbChars = 250));
+                            ->setCommentaire($faker->sentence());
+                            // ->setIdTrajet($trajet->getId());
+                            // ->setScan($faker->text($maxNbChars = 250));
                             // -setIdStatutFrais($enAttente->getId())
                             // -setIdTypeFrais($hebergement->getId())
                             // ->setIdCommercial($commercial->getId())
                             // -setIdTrajet($trajet);
+                    // $trajet->addFraisAll($frais);
                     $manager->persist($frais);
                 }
 
-
+                $manager->persist($trajet);
             }
 
+            $manager->persist($client);
         }
 
        

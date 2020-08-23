@@ -3,9 +3,15 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Utilisateur;
+use App\Repository\UtilisateurRepository;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\BooleanFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -19,18 +25,43 @@ class UtilisateurCrudController extends AbstractCrudController
     }
 
     
+    public function __construct(
+        UtilisateurRepository $utilisateurRepository
+    ){
+        $this->utilisateurRepository = $utilisateurRepository;
+    }
+
     public function configureFields(string $pageName): iterable
     {
-        return [
-            IdField::new('id')->hideOnForm(),
-            TextField::new('email'),
-            TextField::new('nom'),
-            TextField::new('prenom'),
-            TextField::new('telephone'),
-            ArrayField::new('roles'),
-            AssociationField::new('clients')
-            // TextEditorField::new('prenom'),
-        ];
+
+         $user = $this->getUser();
+
+        //  $admins= ['ROLE_USER'];
+
+         $admin =  $this->utilisateurRepository->findOneByRole();
+        
+        // if($this->getEntityFqcn() !== $admin){
+        //  $entity = $this->context->getEntity();   
+
+         if($admin  !== null ){
+            $fields = [
+                IdField::new('id')->hideOnForm(),
+                EmailField::new('email'),
+                TextField::new('nom'),
+                TextField::new('prenom'),
+                TelephoneField::new('telephone'),
+                ArrayField::new('roles'),
+                AssociationField::new('clients')
+            ];
+        }else{
+            $fields = [];
+        }
+
+
+        dump($admin);
+
+        return $fields;
     }
-    
+
 }
+       

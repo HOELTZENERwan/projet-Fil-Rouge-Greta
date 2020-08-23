@@ -5,19 +5,53 @@ namespace App\Controller\Admin;
 use App\Entity\Frais;
 use App\Entity\Client;
 use App\Entity\Trajet;
+use App\Entity\StatutFrais;
 use App\Entity\Utilisateur;
+use App\Repository\FraisRepository;
+use App\Repository\ClientRepository;
+use App\Repository\TrajetRepository;
+use App\Repository\UtilisateurRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
+use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use EasyCorp\Bundle\EasyAdminBundle\Router\CrudUrlGenerator;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 
+/**
+ * @IsGranted("ROLE_ADMIN")
+ */
 class AdminDashboardController extends AbstractDashboardController
 {
+    protected $utilisateurRepository;
+    protected $clientRepository;
+    protected $trajetRepository;
+    protected $fraisRepository;
+    
+
+
+    public function __construct(
+        UtilisateurRepository $utilisateurRepository,
+        FraisRepository $fraisRepository,
+        TrajetRepository $trajetRepository,
+        ClientRepository $clientRepository
+    )
+    {
+        $this->utilisateurRepository = $utilisateurRepository;
+        $this->trajetRepository = $trajetRepository;
+        $this->fraisRepository = $fraisRepository;
+        $this->clientRepository = $clientRepository;
+
+    }
+
+
+
     /**
      * @Route("/admin", name="admin")
      * @return Response
@@ -29,16 +63,19 @@ class AdminDashboardController extends AbstractDashboardController
          // redirect to some CRUD controller
         $routeBuilder = $this->get(CrudUrlGenerator::class)->build();
 
-        return $this->redirect($routeBuilder->setController(ClientCrudController::class)->generateUrl());
+        // return $this->redirect($routeBuilder->setController(ClientCrudController::class)->generateUrl());
  
         //  // you can also redirect to different pages depending on the current user
-        //  if ('jane' === $this->getUser()->getUsername()) {
+        //   if ('jane' === $this->getUser()->getUsername()) {
         //      return $this->redirect('...');
         //  }
- 
-         // you can also render some template to display a proper Dashboard
-         // (tip: it's easier if your template extends from @EasyAdmin/page/content.html.twig)
-        //  return $this->render('some/path/my-dashboard.html.twig');
+
+          return $this->render('bundles/EasyAdminBundle/welcome.html.twig',[
+              'countUtilisateurs' => $this->utilisateurRepository->countUtilisateurs(),
+              'countClients' => $this->clientRepository->countClients(),
+              'countTrajets' =>$this->trajetRepository->countTrajets() ,
+              'countFrais' => $this->fraisRepository->countFrais()
+          ]);
     }
 
     public function configureDashboard(): Dashboard
@@ -53,27 +90,18 @@ class AdminDashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Clients', 'fa fa-address-card', Client::class);
         yield MenuItem::linkToCrud('Frais', 'fa fa-clipboard', Frais::class);
         yield MenuItem::linkToCrud('Trajets', 'fa fa-plane', Trajet::class);
-        yield MenuItem::linkToCrud('Utilisateurs', 'fa fa-users', Utilisateur::class);
-
-        // yield MenuItem::linkToCrud('The Label', 'icon class', EntityClass::class);
-
-        // return [
-        //     MenuItem::linkToDashboard('Dashboard', 'fa fa-home'),
-
-        //     MenuItem::section('Frais'),
-        //     MenuItem::linkToCrud('Frais', 'fa fa-tags', Frais::class),
-        //     MenuItem::linkToCrud('Trajets', 'fa fa-file-text', Trajet::class),
-
-        //     MenuItem::section('Utilisateurs'),
-        //     MenuItem::linkToCrud('Utilisateurs', 'fa fa-user', Utilisateur::class),
-        //     MenuItem::linkToCrud('Users', 'fa fa-user', User::class),
-
-        //     MenuItem::section('Clients'),
-        //     MenuItem::linkToCrud('Clients', 'fa fa-customer', Client::class),
-        //     // MenuItem::linkToCrud('Users', 'fa fa-user', User::class),
-        // ];
+        yield MenuItem::linkToCrud('Utilisateurs', 'fa fa-users', Utilisateur::class)->setPermission('ROLE_ADMIN');
+        yield MenuItem::linkToCrud('Statuts Frais', 'fa fa-tasks', StatutFrais::class)->setPermission('ROLE_SUPER_ADMIN');
+        yield MenuItem::linkToCrud('Types de Frais', 'fa fa-layer-group', StatutFrais::class)->setPermission('ROLE_SUPER_ADMIN');
+    }
 
 
+    public function configureUserMenu(UserInterface $user): UserMenu 
+    {
+        return parent::configureUserMenu($user)
+                ->setName($user->getUsername())
+                ->setGravatarEmail($user->getEmail())
+                ->displayUserAvatar(true);
     }
 
     /**

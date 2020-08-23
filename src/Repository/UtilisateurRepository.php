@@ -22,6 +22,19 @@ class UtilisateurRepository extends ServiceEntityRepository implements PasswordU
         parent::__construct($registry, Utilisateur::class);
     }
 
+
+    /**
+     * @return int|mixed|string
+     */
+
+    public function countUtilisateurs(){
+        $queryBuilder = $this->createQueryBuilder('utilisateur');
+        $queryBuilder->select('COUNT(utilisateur.id) as value');
+        return $queryBuilder->getQuery()->getOneOrNullResult();
+    }
+
+
+
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */
@@ -53,15 +66,31 @@ class UtilisateurRepository extends ServiceEntityRepository implements PasswordU
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?Utilisateur
+    
+    public function findOneByRole(): ?Utilisateur
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
+        return $this->createQueryBuilder('utilisateur')
+        ->where("utilisateur.prenom = 'Estelle'")
+            // ->where("utilisateur.roles LIKE '%ROLE_SUPER_ADMIN%'")
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
-    */
+    
+
+//     public function findAllGreaterThanPrice($price): array
+// {
+//     $conn = $this->getEntityManager()->getConnection();
+
+//     $sql = '
+//         SELECT * FROM product p
+//         WHERE p.price > :price
+//         ORDER BY p.price ASC
+//         ';
+//     $stmt = $conn->prepare($sql);
+//     $stmt->execute(['price' => $price]);
+
+//     // returns an array of arrays (i.e. a raw data set)
+//     return $stmt->fetchAll();
+// }
 }

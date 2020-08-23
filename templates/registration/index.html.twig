@@ -12,7 +12,8 @@
 {{ form_row(form.username, { 'label': 'Nom d\'utilisateur' , 'attr' : { 'placeholder' : 'Votre nom d\utilisateur'  }})}}
 {{ form_row(form.password, { 'label': 'Mot de passe' , 'attr' : { 'placeholder' : 'Votre mot de passe'  }})}}
 {{ form_row(form.confirm_password, { 'label': 'Confirmation mot de passe' , 'attr' : { 'placeholder' : 'Ressaisissez votre mot de passe'  }})}}
+{{ form_row(form.locale, { 'label': 'Langue', 'attr': { 'placeholder' : 'Choisissez votre langue'  }})}}
 
-<button type="submit" class="btn btn-success">Inscrire</button>
+<button type="submit" class="btn btn-success">S'inscrire</button>
 {{  form_end(form)  }}
 {% endblock %}

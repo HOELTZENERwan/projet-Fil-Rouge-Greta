@@ -19,6 +19,19 @@ class FraisRepository extends ServiceEntityRepository
         parent::__construct($registry, Frais::class);
     }
 
+      /**
+     * @return int|mixed|string
+     */
+
+    public function countFrais(){
+        $queryBuilder = $this->createQueryBuilder('frais');
+        $queryBuilder->select('COUNT(frais.id) as value');
+        return $queryBuilder->getQuery()->getOneOrNullResult();
+    }
+
+
+
+
     // /**
     //  * @return Frais[] Returns an array of Frais objects
     //  */

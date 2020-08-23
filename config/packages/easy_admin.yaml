@@ -2,10 +2,12 @@ easy_admin:
     entities:
        # List the entity class name you want to manage
         - App\Entity\Utilisateur
+            controller: App\Controller\UtilisateurController
             list:
               fields:
                 - contract
                 - { property: 'contract', template: 'contract.html.twig' }
+                # - { property: 'roles', }
         - App\Entity\Trajet
         - App\Entity\Client
         - App\Entity\Frais

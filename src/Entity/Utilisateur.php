@@ -96,7 +96,7 @@ class Utilisateur implements UserInterface, EquatableInterface
     
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @var string
      */
     private $contract;
@@ -212,6 +212,7 @@ class Utilisateur implements UserInterface, EquatableInterface
 
     public function setUsername(string $username): self
     {
+    
         $this->username = $username;
 
         return $this;
@@ -363,5 +364,12 @@ class Utilisateur implements UserInterface, EquatableInterface
         }
 
         return true;
+    }
+
+    public function isAdmin(UserInterface $user)
+    {
+        if(in_array('ROLE_ADMIN',$user->getRoles()) || in_array('ROLE_SUPER_ADMIN',$user->getRoles())){
+            return true;
+        }
     }
 }
