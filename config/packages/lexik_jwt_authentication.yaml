@@ -2,4 +2,13 @@ lexik_jwt_authentication:
     secret_key: '%env(resolve:JWT_SECRET_KEY)%'
     public_key: '%env(resolve:JWT_PUBLIC_KEY)%'
     pass_phrase: 'reglisse'
-    token_ttl: 1200
+    token_ttl: 3600
+
+    token_extractors:
+        authorization_header:
+            enabled: false
+            prefix: Bearer
+            name: Authorization
+        cookie:
+            enabled: true
+            name: BEARER
