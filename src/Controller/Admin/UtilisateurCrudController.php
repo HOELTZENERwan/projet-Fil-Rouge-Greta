@@ -10,12 +10,14 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\BooleanFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UtilisateurCrudController extends AbstractCrudController
 {
@@ -36,30 +38,37 @@ class UtilisateurCrudController extends AbstractCrudController
 
          $user = $this->getUser();
 
+         if(!in_array('ROLE_ADMIN', $user->getRoles())){
+             dump($this->getUser()->getRoles());
+         }
+
         //  $admins= ['ROLE_USER'];
 
-         $admin =  $this->utilisateurRepository->findOneByRole();
+        //  $admin =  $this->utilisateurRepository->findOneByRole();
         
         // if($this->getEntityFqcn() !== $admin){
         //  $entity = $this->context->getEntity();   
 
-         if($admin  !== null ){
+        
             $fields = [
                 IdField::new('id')->hideOnForm(),
-                EmailField::new('email'),
+                EmailField::new('email',),
                 TextField::new('nom'),
-                TextField::new('prenom'),
-                TelephoneField::new('telephone'),
-                ArrayField::new('roles'),
-                AssociationField::new('clients')
+                TextField::new('prenom', 'Prénom'),
+                TelephoneField::new('telephone', 'Téléphone'),
+                ArrayField::new('roles', 'Rôles'),
+                AssociationField::new('clients'),
+                TextField::new('password', 'Mot de passe')->onlyWhenCreating(), 
+                AssociationField::new('fraisAll', 'Notes de frais'),
+                // ->formatValue(function ($value, $entity) {
+                //     return $entity->setPassword($value) ? $value : $encoder->encodePassword($entity, $value);
+                // }),
+                ChoiceField::new('locale', 'Langue')->setChoices([
+                        'Français' => 'fr_FR',
+                        'English' => 'en_US'
+                    ])
             ];
-        }else{
-            $fields = [];
-        }
-
-
-        dump($admin);
-
+   
         return $fields;
     }
 

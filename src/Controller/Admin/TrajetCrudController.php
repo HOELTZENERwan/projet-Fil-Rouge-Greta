@@ -22,10 +22,10 @@ class TrajetCrudController extends AbstractCrudController
     {
         return [
             // IdField::new('id'),
-            TextField::new('label'),
-            DateField::new('dateDebut'),
-            DateField::new('dateFin'),
-            AssociationField::new('idClient'),
+            TextField::new('label','Intitulé'),
+            DateField::new('dateDebut', 'Date de début'),
+            DateField::new('dateFin', 'Date de fin'),
+            AssociationField::new('idClient', 'Client'),
             TextEditorField::new('commentaire'),
 
         ];

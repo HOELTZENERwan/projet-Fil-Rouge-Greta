@@ -53,11 +53,10 @@ class TypeFraisCrudController extends AbstractCrudController
     //    }
     
        
-
         return [
             IdField::new('id'),
-            TextField::new('label'),
-            AssociationField::new('allFrais')
+            TextField::new('label', 'Catégorie'),
+            AssociationField::new('allFrais', 'Frais')
             
             // ArrayField::new('count'),
             // NumberField::new('count')

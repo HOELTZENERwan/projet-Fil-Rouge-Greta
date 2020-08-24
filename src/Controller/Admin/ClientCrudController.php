@@ -23,12 +23,12 @@ class ClientCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->hideOnForm(),
-            TextField::new('prenom'),
+            TextField::new('prenom', 'Prénom'),
             TextField::new('nom'),
             TextField::new('adresse'),
             EmailField::new('email'),
-            TelephoneField::new('tel'),
-            AssociationField::new('addedBy')
+            TelephoneField::new('tel', 'Téléphone'),
+            AssociationField::new('addedBy', 'Ajouté par')
                 ->setTemplatePath('bundles/EasyAdminBundle/custom_field.html.twig')
         ];
     }

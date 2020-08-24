@@ -28,17 +28,17 @@ class FraisCrudController extends AbstractCrudController
                                                 ->setLabel('Choisir un fichier');
        
         $image = ImageField::new('scan')->setBasePath('uploads/images/scans')
-                                    ->setLabel('Note de frais');
+                                    ->setLabel('Photo');
 
 
         $fields  = [
                 MoneyField::new('montant')->setCurrency('EUR'),
                 DateTimeField::new('date'),
                 TextEditorField::new('commentaire'),
-                AssociationField::new('idTypeFrais'),
-                AssociationField::new('idStatutFrais'),
-                AssociationField::new('idCommercial'),
-                AssociationField::new('idTrajet')
+                AssociationField::new('idTypeFrais', 'Catégorie'),
+                AssociationField::new('idStatutFrais', 'Statut'),
+                AssociationField::new('idCommercial', 'Commercial'),
+                AssociationField::new('idTrajet', 'Trajet')
         ];
 
         if($pageName === Crud::PAGE_INDEX || $pageName === Crud::PAGE_DETAIL){
