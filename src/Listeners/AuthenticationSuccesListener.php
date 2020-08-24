@@ -21,7 +21,7 @@ class AuthenticationSuccessListener {
         $data = $event->getData();
         $token = $data['token'];
     //on supprime le token
-        unset($data['token']);
+        // unset($data['token']);
        $user =$event->getUser();
        $event->setData($data);
        $response->headers->setCookie(

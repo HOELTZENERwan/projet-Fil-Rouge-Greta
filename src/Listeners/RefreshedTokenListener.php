@@ -19,7 +19,7 @@ class RefreshedTokenListener implements EventSubscriberInterface {
         $refreshToken = $event->getData()['refresh_token'];
         $response = $event->getResponse();
         $data = $event->getData();
-        dump($data);
+        // var_dump($data);
         if($refreshToken){
             $response->headers->setCookie(
                 new Cookie('REFRESH_TOKEN', $refreshToken,
