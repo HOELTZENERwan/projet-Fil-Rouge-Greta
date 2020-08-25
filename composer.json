@@ -15,6 +15,7 @@
         "gesdinet/jwt-refresh-token-bundle": "^0.9.1",
         "lexik/jwt-authentication-bundle": "^2.8",
         "sensio/framework-extra-bundle": "^5.1",
+        "sensiolabs/security-checker": "^6.0",
         "symfony/asset": "4.4.*",
         "symfony/console": "4.4.*",
         "symfony/dotenv": "4.4.*",
@@ -27,6 +28,7 @@
         "symfony/mailer": "4.4.*",
         "symfony/monolog-bundle": "^3.1",
         "symfony/process": "4.4.*",
+        "symfony/requirements-checker": "^1.1",
         "symfony/security-bundle": "4.4.*",
         "symfony/serializer-pack": "*",
         "symfony/translation": "4.4.*",
@@ -73,7 +75,9 @@
     "scripts": {
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+            "assets:install %PUBLIC_DIR%": "symfony-cmd",
+            "security-checker security:check": "script",
+            "requirements-checker": "script"
         },
         "post-install-cmd": [
             "@auto-scripts"

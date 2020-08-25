@@ -1,20 +1,24 @@
 <?php
 
+use EasyCorp\Bundle\EasyDeployBundle\Deployer\DefaultConfiguration;
 use EasyCorp\Bundle\EasyDeployBundle\Deployer\DefaultDeployer;
 
+/** 
+ *@see https://github.com/EasyCorp/easy-deploy-bundle/blob/master/doc/default-deployer.md 
+*/
 return new class extends DefaultDeployer
 {
     public function configure()
     {
         return $this->getConfigBuilder()
             // SSH connection string to connect to the remote server (format: user@host-or-IP:port-number)
-            ->server('user@hostname')
+            ->server('emanagc@ftp.cluster023.hosting.ovh.net')
             // the absolute path of the remote server directory where the project is deployed
-            ->deployDir('/var/www/vhosts/symfony-demo')
+            ->deployDir('/home/emanagc')
             // the URL of the Git repository where the project code is hosted
-            ->repositoryUrl('https://github.com/symfony/symfony-demo')
+            ->repositoryUrl('git@github.com:HOELTZENERwan/projet-Fil-Rouge-Greta.git')
             // the repository branch to deploy
-            ->repositoryBranch('master')
+            ->repositoryBranch('backoffice')
         ;
     }
 

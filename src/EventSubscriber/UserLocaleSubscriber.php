@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Subscribers;
+namespace App\EventSubscriber;
 
 use Symfony\Component\Security\Http\SecurityEvents;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;

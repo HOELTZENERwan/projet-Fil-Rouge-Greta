@@ -234,6 +234,18 @@
             "./config/packages/sensio_framework_extra.yaml"
         ]
     },
+    "sensiolabs/security-checker": {
+        "version": "4.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.0",
+            "ref": "160c9b600564faa1224e8f387d49ef13ceb8b793"
+        },
+        "files": [
+            "./config/packages/security_checker.yaml"
+        ]
+    },
     "symfony/asset": {
         "version": "v4.4.10"
     },
@@ -467,6 +479,15 @@
     },
     "symfony/property-info": {
         "version": "v4.4.10"
+    },
+    "symfony/requirements-checker": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "93d0ec48679f5e240d265088305c1ad775723f93"
+        }
     },
     "symfony/routing": {
         "version": "4.2",

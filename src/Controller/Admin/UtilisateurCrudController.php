@@ -36,20 +36,6 @@ class UtilisateurCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
 
-         $user = $this->getUser();
-
-         if(!in_array('ROLE_ADMIN', $user->getRoles())){
-             dump($this->getUser()->getRoles());
-         }
-
-        //  $admins= ['ROLE_USER'];
-
-        //  $admin =  $this->utilisateurRepository->findOneByRole();
-        
-        // if($this->getEntityFqcn() !== $admin){
-        //  $entity = $this->context->getEntity();   
-
-        
             $fields = [
                 IdField::new('id')->hideOnForm(),
                 EmailField::new('email',),
