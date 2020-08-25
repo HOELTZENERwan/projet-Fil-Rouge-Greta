@@ -94,7 +94,7 @@ class ApiFraisController extends AbstractController
         }
     }
 
-/**
+    /**
      * @Route("/apiee/trajets", name="api_trajets_index", methods={"GET"})
      */
     public function indexTrajets(TrajetRepository $trajetRepository, SerializerInterface $serializer)

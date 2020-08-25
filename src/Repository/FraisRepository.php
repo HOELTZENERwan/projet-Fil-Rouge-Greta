@@ -19,7 +19,7 @@ class FraisRepository extends ServiceEntityRepository
         parent::__construct($registry, Frais::class);
     }
 
-      /**
+    /**
      * @return int|mixed|string
      */
 
